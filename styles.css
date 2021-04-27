@@ -1,0 +1,149 @@
+* {
+    margin-block: 0%;
+}
+body {
+    font-size: 1.5em;
+    margin: 0px;
+    color: rgb(255, 240, 240);
+    background-color: wheat;
+    min-width: 325px;
+    width: 100%;
+    max-width: 2500px;
+}
+button {
+    font-size: 1em;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: green;
+    border: solid blue;
+}
+main{
+    min-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+.ControlPanel{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    width: 100%;
+    border-top: solid black;
+}
+.ControlPanel section{
+    display: inline-flex;
+    font-size: 1.2em;
+}
+
+.ControlPanel section input{
+    width: 30px;
+    height: 30px;
+}
+
+.task{
+    background-color: green;
+    border: solid blue;
+    border-top: none;
+    padding: 10px;
+    width: 33.333333%;
+    min-width: 300px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.task button {
+    width: 30px;
+    height: 30px;
+}
+.task_Date_OverDue{
+    color: rgb(255, 131, 131);
+}
+.task_Date_notOverDue{
+    color: white;
+}
+.task>div{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+.task>div>div{
+    display: flex;
+    justify-content: space-between;
+}
+.task input{
+    min-width: 40px;
+    min-height: 40px;
+}
+.task_title_done{
+    text-decoration: line-through;
+    color: rgba(255, 255, 255, 0.507);
+}
+.task_title_notDone{
+    color: white;   
+}
+
+.formBlock{
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: #0000008e;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.addTaskForm{
+    border: solid blue;
+    background: green;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px 20px;
+}
+
+.addTaskForm button{
+    background-color: #212121;
+    color: azure;
+}
+
+.addTaskForm p{
+    background-color: #212121;
+    color: azure;
+    text-align: center;
+    width: 30px;
+    border-left: solid #707070;
+    border-top: solid #707070;
+}
+
+.addTaskForm p:hover{
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+
+@media only screen and (max-width: 660px) {
+    .task {
+        width: 100%;
+    }
+}
+@media only screen and (min-width: 660px) {
+    .task {
+        width: calc(50% - 26px);
+    }
+}
+@media only screen and (min-width: 1000px) {
+    .task {
+        width: calc(33.333% - 26px);
+    }
+}
