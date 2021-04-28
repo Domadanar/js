@@ -19,20 +19,15 @@
 	<main id="main_Box">
 		<section class="task">
 			<div>
-				<h2 class="">Add more tasks.</h2>
 				<div>
 					<input type="checkbox" id="checkbox" class="task_checkbox"
 						onchange="completeTaskCheckbox(event.target)">
 					<button onclick="deleteTask(event.target)">X</button>
 				</div>
 			</div>
-			<p class="task_Description">Create your own task, and get more organizated.</p>
 			<div class="task_Date_Check">
-				<p>
-					Due date:
-				</p>
+
 				<h5 class="task_Date_notOverDue">
-					2070.04.27
 				</h5>
 			</div>
 		</section>
@@ -41,7 +36,7 @@
 		<form class="AddTaskForm" id="AddTaskForm">
 			<input type="text" name="title" placeholder="Title (required)">
 			<input type="text" name="description" placeholder="Description">
-			<input type="text" name="date" placeholder="DueDate (yyyy.mm.dd)">
+			<input type="text" name="duedate" placeholder="DueDate (yyyy-mm-dd)">
 			<button type="submit">Add</button>
 			<p onclick="closeForm()">X</p>
 		</form>

@@ -1,17 +1,4 @@
-class Task {
-	constructor(title, description, date, done) {
-		this.title = title;
-		this.description = description;
-		this.date = date;
-		done === undefined ? this.done = false : this.done = done;
-	}
-}
-let tasks = [
-	new Task('Add task.', 'description', '2021.04.27', true),
-	new Task('123.'),
-	new Task('123', '', '2021.04.19', false),
-	new Task('123', '', '2020.11.03', true)
-]
+const contactsEndpoint = 'http://localhost:5000/';
 
 const mainElement = document.getElementById('main_Box');
 
@@ -19,26 +6,6 @@ function renderTasks(tasks) {
 	let i = 0;
 	document.getElementById("main_Box").innerHTML = ' ';
 
-	tasks.forEach(task => {
-		const { title, description, date, done } = task;
-		let titleElement;
-		let descriptionElement;
-		let dateElement;
-		let fixDate = new Date(date);
-
-		description === undefined ? descriptionElement = '' : descriptionElement = `<p class="task_Description">${description}</p>`;
-
-		if (date === undefined || date === '') {
-			dateElement = ' '
-		} else {
-			let dateStatus = ' ';
-			if (new Date() > fixDate && !done) {
-				dateStatus = 'task_Date_OverDue'
-			} else {
-				dateStatus = 'task_Date_notOverDue'
-			}
-			dateElement = `<div class="task_Date_Check"><p>Due date:</p><h5 class="${dateStatus}">${fixDate.toDateString()}</h5></div>`;
-		};
 		let checked = ' ';
 		let taskDoneClass = ' ';
 
@@ -48,19 +15,15 @@ function renderTasks(tasks) {
 		};
 
 		titleElement =
-			`<div>
-                <h2 ${taskDoneClass}>${title}</h2>
-                <div>
-                    <input type="checkbox" class="task_checkbox" ${checked} onchange="completeTaskCheckbox(event.target)"> 
-                    <button onclick="deleteTask(event.target)">X</button>
-                </div>
-            </div>`;
-		mainElement.innerHTML += `<section class="task" id="task_${i}">${titleElement} ${descriptionElement} ${dateElement}</section>`;
-		i++;
-	});
-
+        `<div>
+            <h2 ${taskDoneClass}>${title}</h2>
+            <div>
+                <input type="checkbox" class="task_checkbox" ${checked} onchange="completeTaskCheckbox(event.target)"> 
+                <button onclick="deleteTask(event.target)">X</button>
+            </div>
+        </div>`;
 }
-renderTasks(tasks);
+
 
 function completeTasksVisibility(target) {
 	let doneTasks = document.getElementsByClassName('task_checkbox');
@@ -120,18 +83,5 @@ taskForm.addEventListener('submit', (event) => {
 		return;
 	}
 
-	if (task['date'] !==  ' ') {
-		let date = new Date(task['date']);
-		console.log(date);
-		if (date == 'Invalid Date') {
-			alert('Invalid Date!');
-			return;
-		} else {
-			task['date'] = date;
-		}
-	}
-	tasks.push(task);
-	renderTasks(tasks);
-	taskForm.reset();
 	closeForm();
 })
