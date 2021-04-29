@@ -3,16 +3,40 @@ const contactsEndpoint = 'http://localhost:5000/';
 const mainElement = document.getElementById('main_Box');
 
 function renderTasks(tasks) {
-	let i = 0;
+	
 	document.getElementById("main_Box").innerHTML = ' ';
+	
+	console.log(tasks);
+	tasks.forEach(renderNewTasks)
+};
+function renderNewTasks(task){
+	const {title, description, dueDate, done, taskId} = task;
+	let titleElement;
+    let descriptionElement;
+    let dateElement;
 
-		let checked = ' ';
-		let taskDoneClass = ' ';
+	description === null ? descriptionElement = '' : descriptionElement = `<p class="task_Description">${description}</p>`;
 
-		if (done) {
-			checked = 'checked';
-			taskDoneClass = 'class="task_title_done"';
-		};
+    if (dueDate === null || dueDate === ''){ 
+        dateElement = ''
+    } else {
+        let fixDate = new Date(dueDate);
+        let dateStatus = '';
+        if (new Date() > fixDate  && !done) {
+            dateStatus = 'task_Date_OverDue'
+        } else {
+			dateStatus = 'task_Date_notOverDue'
+        }
+		dateElement = `<div class="task_Date_Check"><p>Due date:</p><h5 class="${dateStatus}">${fixDate.toDateString()}</h5></div>`;
+    }; 
+
+    let checked = '';
+    let taskDoneClass = ''; 
+
+	if (done) {
+        checked = 'checked';
+        taskDoneClass = 'class="task_title_done"';
+    };
 
 		titleElement =
         `<div>
@@ -22,7 +46,8 @@ function renderTasks(tasks) {
                 <button onclick="deleteTask(event.target)">X</button>
             </div>
         </div>`;
-}
+		mainElement.innerHTML += `<section class="task" id="task_${taskId}">${titleElement} ${descriptionElement} ${dateElement}</section>`;
+	};
 
 
 function completeTasksVisibility(target) {
@@ -45,25 +70,28 @@ function completeTaskCheckbox(target) {
 	let taskID = taskElement.id.split("_")[1];
 	let taskTitleElement = taskElement.firstElementChild.firstElementChild;
 
+	let bol = false;
+
 	if (target.checked) {
 		taskTitleElement.classList.add("task_title_done");
-		tasks[taskID].done = true;
+		bol = true;
 	} else {
 		taskTitleElement.classList.remove("task_title_done");
-		tasks[taskID].done = false;
+		bol = false;
 	}
+	updateTaskStatus(taskID, bol).then(response => console.log("UPDATED at " + response) );
 	completeTasksVisibility(document.getElementById("ShowCheckbox"));
-	console.log(tasks);
 }
 
 function deleteTask(target) {
 	let taskElement = target.parentElement.parentElement.parentElement;
 	let taskID = taskElement.id.split("_")[1];
 
-	delete tasks[taskID];
+	deleteTaskFromDB(taskID).then(response => {renderFetchTasks(), console.log("DELETED at '" + response + "'")} );
 	taskElement.remove();
-	console.log(tasks);
 }
+
+
 function openForm() {
 	document.getElementById('FormBlock').style.display = 'flex';
 }
@@ -82,6 +110,24 @@ taskForm.addEventListener('submit', (event) => {
 		alert('Title is required!')
 		return;
 	}
-
+	createTask(task)
+	.then(renderNewTask).catch(postError)
+	.then(_ => taskForm.reset())
 	closeForm();
 })
+
+function renderFetchTasks(){ 
+    fetch(contactsEndpoint + 'lists/tasks?all=true')
+    .then(response => response.json())
+    .then(tasksResponse => {renderTasks(tasksResponse), tasks=tasksResponse})
+    .catch(handleError);
+}
+
+function handleError() {
+    alert("Can't load tasks.");
+} 
+
+function postError() {
+    alert("Can't add task.");
+} 
+renderFetchTasks();
